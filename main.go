@@ -20,7 +20,7 @@ func init() {
 }
 
 func index(w http.ResponseWriter, _ *http.Request) {
-	err := tpl.ExecuteTemplate(w, "index.gohtml")
+	err := tpl.ExecuteTemplate(w, "index.gohtml", nil)
 	HandleError(w, err)
 }
 
@@ -31,14 +31,23 @@ func HandleError(w http.ResponseWriter, err error) {
 	}
 }
 
-func main() {
-	CfgData := srvctl.LoadCfg()
+func handler(w http.ResponseWriter, r *http.Request, mydata map[string]string) {
+	err := tpl.ExecuteTemplate(w, "index.gohtml", mydata)
+	HandleError(w, err)
+	//fmt.Println(mydata)
+}
 
-	for k, v := range CfgData {
+func main() {
+	cfgData := srvctl.LoadCfg()
+
+	for k, v := range cfgData {
 		fmt.Println(k, v)
 	}
 
-	http.HandleFunc("/", index)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		handler(w, r, cfgData)
+	})
+
 	http.ListenAndServe(":8080", nil)
 
 	// err := tpl.Execute(os.Stdout, cfgData)
