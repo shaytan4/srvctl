@@ -31,6 +31,11 @@ func LoadCfg() {
 	}
 	fmt.Printf("Using config: %s\n", viper.ConfigFileUsed())
 
+	fmt.Println("====================")
+	for _, i := range viper.AllKeys() {
+		fmt.Println(i, viper.Get(i))
+	}
+
 	if viper.IsSet("OS.reboot") {
 		fmt.Println("OS.reboot:", viper.Get("OS.reboot"))
 	} else {

@@ -1,4 +1,4 @@
-module github.com/shaytan4/srvctl
+module srvctl
 
 go 1.19
 

@@ -1,13 +1,10 @@
 package main
 
 import (
-	"fmt"
-
-	cmd "github.com/shaytan4/srvctl/pkg"
+	srvctl "srvctl/pkg"
 )
 
 func main() {
-	fmt.Println("test")
-	cmd.LoadCfg()
+	srvctl.LoadCfg()
 
 }

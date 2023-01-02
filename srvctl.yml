@@ -1,5 +1,5 @@
 OS:
-    reboot:
-      - "command reboot server"
-    update_os:
-      - "command update os"
+  reboot:
+    - "command reboot server"
+  update_os:
+    - "command update os"
