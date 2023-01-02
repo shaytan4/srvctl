@@ -1,5 +1,11 @@
-OS:
+os:
   reboot:
     - "command reboot server"
   update_os:
     - "command update os"
+
+plex:
+  update:
+    - "plex update command"
+  restart:
+    - "plex server restart"
