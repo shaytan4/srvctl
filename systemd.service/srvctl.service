@@ -1,0 +1,13 @@
+[Unit]
+Description=Go Server
+#  /etc/systemd/system/<filename>.service
+
+[Service]
+ExecStart=/home/<username>/<path-to-exe>/<exe>
+WorkingDirectory=/home/<username>/<exe-working-dir>
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
