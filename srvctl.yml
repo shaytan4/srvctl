@@ -1,8 +1,12 @@
 os:
   reboot:
-    - "command reboot server"
+    - "reboot"
   update_os:
-    - "command update os"
+    - "apt-get update -y"
+  date:
+    - "date"
+  explorer:
+    - "explorer.exe"
 
 plex:
   update:

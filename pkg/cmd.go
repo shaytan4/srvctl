@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 
 	"github.com/spf13/viper"
 )
@@ -21,15 +22,26 @@ func HandleError(w http.ResponseWriter, err error) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]string) {
+	err := Tpl.ExecuteTemplate(w, "index.gohtml", mydata)
+	HandleError(w, err)
+
 	url_path := r.URL.Path[1:]
 	fmt.Println(url_path)
+	execCmd := mydata[url_path]
+	fmt.Println("execCmd from map", execCmd)
+
+	runCmd := exec.Command(execCmd)
+	out, err := runCmd.Output()
+	if err != nil {
+		log.Println("could not run command: ", err)
+	}
+	log.Println("Output: ", string(out))
+
 	// if r.URL.Path != "/" {
 	// 	http.NotFound(w, r)
 	// 	return
 	// }
 
-	err := Tpl.ExecuteTemplate(w, "index.gohtml", mydata)
-	HandleError(w, err)
 }
 
 func LoadCfg() map[string]string {

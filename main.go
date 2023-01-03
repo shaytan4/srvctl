@@ -9,6 +9,8 @@ package main
 
 // https://habr.com/ru/post/122095/
 
+// https://stackoverflow.com/questions/15240884/how-can-i-handle-http-requests-of-different-methods-to-in-go
+
 import (
 	"html/template"
 	"net/http"
