@@ -1,6 +1,13 @@
 package main
 
 // https://github.com/shaytan4/mygo/blob/ac21d7da5286d9050ccef5047760754ab09c7aec/01_Mastering_go/ch06_functions/html_tmpl/main.go
+// https://www.sohamkamani.com/golang/exec-shell-command/
+// https://zetcode.com/golang/exec-command/
+
+// https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/04.1.html
+// https://www.golangprograms.com/example-to-handle-get-and-post-request-in-golang.html
+
+// https://habr.com/ru/post/122095/
 
 import (
 	"html/template"

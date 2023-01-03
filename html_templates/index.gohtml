@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<link href="style.css" rel="stylesheet" type="text/css">
+
+
 <head>
     <meta charset="UTF-8">   
     <title>My Nas server</title>
@@ -8,19 +9,18 @@
 <body>
 <h2>Welcome to Nas server!</h2>
 
+<a href="/" style="margin-right: 20px;">Home sweet home!</a><br><br>
 
-<table>
+{{/* {{range $key, $val := .}}
+<a href={{$key}} style="margin-right: 20px;">{{$key}}</a><br>
+{{end}} */}}
+
 {{range $key, $val := .}}
-
-{{/* <tr><td>{{$key}}</td><td>{{$val}}</td></tr>  */}}
-
-  <form action={{$val}}>
-    <input type="submit" value={{$key}}>
-
+    <form>
+      <input type="button" onclick="window.location.href={{$key}};" value={{$key}} />
+    </form>
+<br>
 {{end}}
-
-
-</table>
 
 </body>
 </html>

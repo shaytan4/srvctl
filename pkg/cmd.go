@@ -21,6 +21,13 @@ func HandleError(w http.ResponseWriter, err error) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]string) {
+	url_path := r.URL.Path[1:]
+	fmt.Println(url_path)
+	// if r.URL.Path != "/" {
+	// 	http.NotFound(w, r)
+	// 	return
+	// }
+
 	err := Tpl.ExecuteTemplate(w, "index.gohtml", mydata)
 	HandleError(w, err)
 }
