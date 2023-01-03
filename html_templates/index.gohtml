@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+<link href="style.css" rel="stylesheet" type="text/css">
 <head>
-    <meta charset="UTF-8">
-    <title>My Peeps</title>
+    <meta charset="UTF-8">   
+    <title>My Nas server</title>
 </head>
 <body>
-<ul>
-    {{range $key, $val := .}}
-    <li>{{$key}} -  {{$val}}</li>
-    {{end}}
-</ul>
+<h2>Welcome to Nas server!</h2>
+
+
+<table>
+{{range $key, $val := .}}
+
+{{/* <tr><td>{{$key}}</td><td>{{$val}}</td></tr>  */}}
+
+  <form action={{$val}}>
+    <input type="submit" value={{$key}}>
+
+{{end}}
+
+
+</table>
+
 </body>
 </html>

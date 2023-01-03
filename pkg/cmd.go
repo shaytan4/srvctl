@@ -3,11 +3,27 @@ package cmd
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/spf13/viper"
 )
+
+var Tpl *template.Template
+
+func HandleError(w http.ResponseWriter, err error) {
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Fatalln(err)
+	}
+}
+
+func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]string) {
+	err := Tpl.ExecuteTemplate(w, "index.gohtml", mydata)
+	HandleError(w, err)
+}
 
 func LoadCfg() map[string]string {
 	var configFile *string = flag.String("c", "myConfig", "Setting the configuration file")
