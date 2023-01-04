@@ -3,8 +3,8 @@ Description=Go Server
 #  /etc/systemd/system/<filename>.service
 
 [Service]
-ExecStart=/home/<username>/<path-to-exe>/<exe>
-WorkingDirectory=/home/<username>/<exe-working-dir>
+ExecStart=/bin/srvctl
+WorkingDirectory=/etc/srvctl
 User=root
 Group=root
 Restart=always
