@@ -2,13 +2,15 @@ os:
   reboot:
     - reboot
   update_pkg:
-    - /usr/bin/apt update -y
+    - apt update -y
   upgrade_all:
     - /usr/bin/apt-get dist-upgrade -y
   date:
     - date
   explorer:
     - explorer.exe
+  ls:
+    - ls -lah
 
 plex:
   update_plex:

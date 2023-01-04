@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
     <meta charset="UTF-8">   
     <title>My Nas server</title>
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.button {width: 80%;}
+</style>
+
 </head>
+
 <body>
 <h2>Welcome to Nas server!</h2>
 
@@ -17,7 +32,7 @@
 
 {{range $key, $val := .}}
     <form>
-      <input type="button" onclick="window.location.href={{$key}};" value={{$key}} />
+      <input  class="button button" type="button" onclick="window.location.href={{$key}};" value={{$key}} />
     </form>
 <br>
 {{end}}

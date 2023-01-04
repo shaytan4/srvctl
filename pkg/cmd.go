@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -32,7 +33,11 @@ func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]stri
 		execCmd := mydata[url_path]
 		log.Println("execCmd command got form  map[string]string -------------- ", execCmd)
 
-		runCmd := exec.Command(execCmd)
+		s := strings.Split(execCmd, " ")
+
+		//runCmd := exec.Command(execCmd)
+		runCmd := exec.Command(s[0], s[1:]...)
+		//runCmd.Env = os.Environ()
 		out, err := runCmd.Output()
 		if err != nil {
 			log.Println("could not run command: ", err)
