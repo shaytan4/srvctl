@@ -1,15 +1,15 @@
 os:
   reboot:
-    - "reboot"
+    - reboot
   update_os:
-    - "apt-get update -y"
+    - apt update -y
   date:
-    - "date"
+    - date
   explorer:
-    - "explorer.exe"
+    - explorer.exe
 
 plex:
-  update:
-    - "plex update command"
-  restart:
-    - "plex server restart"
+  update_plex:
+    - plex update command
+  restart_plex:
+    - plex server restart

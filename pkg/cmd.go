@@ -22,25 +22,24 @@ func HandleError(w http.ResponseWriter, err error) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]string) {
+	url_path := r.URL.Path[1:]
+
 	err := Tpl.ExecuteTemplate(w, "index.gohtml", mydata)
 	HandleError(w, err)
 
-	url_path := r.URL.Path[1:]
-	fmt.Println(url_path)
-	execCmd := mydata[url_path]
-	fmt.Println("execCmd from map", execCmd)
+	if url_path != "" {
+		log.Println("URL path values is", url_path)
+		execCmd := mydata[url_path]
+		log.Println("execCmd command got form  map[string]string -------------- ", execCmd)
 
-	runCmd := exec.Command(execCmd)
-	out, err := runCmd.Output()
-	if err != nil {
-		log.Println("could not run command: ", err)
+		runCmd := exec.Command(execCmd)
+		out, err := runCmd.Output()
+		if err != nil {
+			log.Println("could not run command: ", err)
+		} else {
+			log.Println("Output: ", string(out))
+		}
 	}
-	log.Println("Output: ", string(out))
-
-	// if r.URL.Path != "/" {
-	// 	http.NotFound(w, r)
-	// 	return
-	// }
 
 }
 
@@ -55,7 +54,7 @@ func LoadCfg() map[string]string {
 		viper.SetConfigFile(*configFile)
 	} else {
 		viper.SetConfigName(*configFile)
-		viper.AddConfigPath("/tmp")
+		viper.AddConfigPath("/etc")
 		viper.AddConfigPath("$HOME")
 		viper.AddConfigPath(".")
 	}
@@ -70,20 +69,10 @@ func LoadCfg() map[string]string {
 	confLines := make(map[string]string)
 
 	for _, i := range viper.AllKeys() {
-		log.Println(i, viper.Get(i))
-		confLines[i] = fmt.Sprintf("%v", viper.Get(i))
+		log.Println("key: ", i, "value: ", viper.Get(i))
+		x := viper.Get(i)
+		n := fmt.Sprintf("%s", x)
+		confLines[i] = n[1 : len(n)-1] // truncate []
 	}
-
-	// if viper.IsSet("OS.reboot") {
-	// 	fmt.Println("OS.reboot:", viper.Get("OS.reboot"))
-	// } else {
-	// 	fmt.Println("OS.reboot not set!")
-	// }
-
-	// if viper.IsSet("OS.update_os") {
-	// 	fmt.Println("OS.update_os:", viper.Get("OS.update_os"))
-	// } else {
-	// 	fmt.Println("OS.update_os not set!")
-	// }
 	return confLines
 }
