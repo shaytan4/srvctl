@@ -1,9 +1,10 @@
 [Unit]
-Description=Go Server
+Description=Go SrvCtl Server
 #  /etc/systemd/system/<filename>.service
 
 [Service]
-ExecStart=/bin/srvctl
+Environment=PORT=88
+ExecStart=/etc/srvctl/srvctl -c /etc/srvctl/srvctl.yml
 WorkingDirectory=/etc/srvctl
 User=root
 Group=root
