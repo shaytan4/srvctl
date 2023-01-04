@@ -1,8 +1,10 @@
 os:
   reboot:
     - reboot
-  update_os:
-    - apt update -y
+  update_pkg:
+    - /usr/bin/apt update -y
+  upgrade_all:
+    - /usr/bin/apt-get dist-upgrade -y
   date:
     - date
   explorer:
@@ -10,6 +12,6 @@ os:
 
 plex:
   update_plex:
-    - plex update command
+    - /root/plexupdate/plexupdate.sh -a
   restart_plex:
-    - plex server restart
+    - /usr/bin/systemctl restart plexmediaserver
