@@ -29,6 +29,11 @@ func main() {
 		srvctl.IndexHandler(w, r, cfgData)
 	})
 
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		srvctl.Login(w, r)
+	})
+
+	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(port, nil)
 
 }

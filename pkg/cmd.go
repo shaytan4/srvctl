@@ -1,3 +1,5 @@
+// https://stackoverflow.com/questions/37492544/golang-http-redirect-strange-behavior
+
 package cmd
 
 import (
@@ -14,6 +16,9 @@ import (
 )
 
 var Tpl *template.Template
+
+var adm_name = "admin"
+var adm_pass = "parol"
 
 func HandleError(w http.ResponseWriter, err error) {
 	if err != nil {
@@ -43,6 +48,28 @@ func IndexHandler(w http.ResponseWriter, r *http.Request, mydata map[string]stri
 			log.Println("could not run command: ", err)
 		} else {
 			log.Println("Output: ", string(out))
+		}
+	}
+
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	err := Tpl.ExecuteTemplate(w, "login.gohtml", adm_name)
+	HandleError(w, err)
+
+	// process form submission
+	if r.Method == http.MethodPost {
+		login := r.FormValue("username")
+		pass := r.FormValue("password")
+
+		if login == adm_name && pass == adm_pass {
+			log.Println("Login is OK")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			//http.RedirectHandler("/", http.StatusSeeOther)
+			//return
+		} else {
+			log.Printf("Login Err , Login - %s ,Pass - %s", login, pass)
+			http.Redirect(w, r, "/errPage", http.StatusFound)
 		}
 	}
 
