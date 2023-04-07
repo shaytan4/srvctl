@@ -5,12 +5,10 @@ os:
     - apt update -y
   upgrade_all:
     - /usr/bin/apt-get dist-upgrade -y
-  date:
-    - date
-  explorer:
+  poweroff:
+    - poweroff
+  win_explorer_debug:
     - explorer.exe
-  ls:
-    - ls -lah
 
 plex:
   update_plex:
