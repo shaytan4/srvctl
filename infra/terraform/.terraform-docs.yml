@@ -1,0 +1,13 @@
+formatter: "markdown table"
+settings:
+  anchor: true
+  lockfile: true
+  sensetive: false
+  hide-empty: true
+  html: false
+sort:
+  enabled: true
+  by: name
+output:
+  file: README.md
+  mode: inject

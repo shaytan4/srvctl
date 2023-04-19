@@ -1,0 +1,100 @@
+<testsuites>
+  <testsuite name="main.go" tests="3" errors="0" failures="3">
+    <testcase name="errcheck" classname="main.go:37:21">
+      <failure message="main.go:37:21: Error return value of `http.ListenAndServe` is not checked" type=""><![CDATA[: Error return value of `http.ListenAndServe` is not checked
+Category: errcheck
+File: main.go
+Line: 37
+Details: 	http.ListenAndServe(port, nil)]]></failure>
+    </testcase>
+    <testcase name="gochecknoinits" classname="main.go:12:1">
+      <failure message="main.go:12:1: don&#39;t use `init` function" type=""><![CDATA[: don't use `init` function
+Category: gochecknoinits
+File: main.go
+Line: 12
+Details: func init() {]]></failure>
+    </testcase>
+    <testcase name="whitespace" classname="main.go:39">
+      <failure message="main.go:39: unnecessary trailing newline" type=""><![CDATA[: unnecessary trailing newline
+Category: whitespace
+File: main.go
+Line: 39
+Details: 
+}]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="pkg/cmd.go" tests="10" errors="0" failures="10">
+    <testcase name="gocritic" classname="pkg/cmd.go:41:3">
+      <failure message="pkg/cmd.go:41:3: commentFormatting: put a space between `//` and comment text" type=""><![CDATA[: commentFormatting: put a space between `//` and comment text
+Category: gocritic
+File: pkg/cmd.go
+Line: 41
+Details: 		//runCmd := exec.Command(execCmd)]]></failure>
+    </testcase>
+    <testcase name="gocritic" classname="pkg/cmd.go:43:3">
+      <failure message="pkg/cmd.go:43:3: commentFormatting: put a space between `//` and comment text" type=""><![CDATA[: commentFormatting: put a space between `//` and comment text
+Category: gocritic
+File: pkg/cmd.go
+Line: 43
+Details: 		//runCmd.Env = os.Environ()]]></failure>
+    </testcase>
+    <testcase name="gocritic" classname="pkg/cmd.go:66:4">
+      <failure message="pkg/cmd.go:66:4: commentFormatting: put a space between `//` and comment text" type=""><![CDATA[: commentFormatting: put a space between `//` and comment text
+Category: gocritic
+File: pkg/cmd.go
+Line: 66
+Details: 			//http.RedirectHandler("/", http.StatusSeeOther)]]></failure>
+    </testcase>
+    <testcase name="gosec" classname="pkg/cmd.go:42:13">
+      <failure message="pkg/cmd.go:42:13: G204: Subprocess launched with a potential tainted input or cmd arguments" type=""><![CDATA[: G204: Subprocess launched with a potential tainted input or cmd arguments
+Category: gosec
+File: pkg/cmd.go
+Line: 42
+Details: 		runCmd := exec.Command(s[0], s[1:]...)]]></failure>
+    </testcase>
+    <testcase name="whitespace" classname="pkg/cmd.go:51">
+      <failure message="pkg/cmd.go:51: unnecessary trailing newline" type=""><![CDATA[: unnecessary trailing newline
+Category: whitespace
+File: pkg/cmd.go
+Line: 51
+Details: 
+}]]></failure>
+    </testcase>
+    <testcase name="whitespace" classname="pkg/cmd.go:73">
+      <failure message="pkg/cmd.go:73: unnecessary trailing newline" type=""><![CDATA[: unnecessary trailing newline
+Category: whitespace
+File: pkg/cmd.go
+Line: 73
+Details: 
+}]]></failure>
+    </testcase>
+    <testcase name="stylecheck" classname="pkg/cmd.go:18:5">
+      <failure message="pkg/cmd.go:18:5: ST1003: should not use underscores in Go names; var adm_name should be admName" type=""><![CDATA[: ST1003: should not use underscores in Go names; var adm_name should be admName
+Category: stylecheck
+File: pkg/cmd.go
+Line: 18
+Details: var adm_name = "admin"]]></failure>
+    </testcase>
+    <testcase name="stylecheck" classname="pkg/cmd.go:19:5">
+      <failure message="pkg/cmd.go:19:5: ST1003: should not use underscores in Go names; var adm_pass should be admPass" type=""><![CDATA[: ST1003: should not use underscores in Go names; var adm_pass should be admPass
+Category: stylecheck
+File: pkg/cmd.go
+Line: 19
+Details: var adm_pass = "parol"]]></failure>
+    </testcase>
+    <testcase name="stylecheck" classname="pkg/cmd.go:29:2">
+      <failure message="pkg/cmd.go:29:2: ST1003: should not use underscores in Go names; var url_path should be urlPath" type=""><![CDATA[: ST1003: should not use underscores in Go names; var url_path should be urlPath
+Category: stylecheck
+File: pkg/cmd.go
+Line: 29
+Details: 	url_path := r.URL.Path[1:]]]></failure>
+    </testcase>
+    <testcase name="stylecheck" classname="pkg/cmd.go:77:17">
+      <failure message="pkg/cmd.go:77:17: ST1023: should omit type *string from declaration; it will be inferred from the right-hand side" type=""><![CDATA[: ST1023: should omit type *string from declaration; it will be inferred from the right-hand side
+Category: stylecheck
+File: pkg/cmd.go
+Line: 77
+Details: 	var configFile *string = flag.String("c", "myConfig", "Setting the configuration file")]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

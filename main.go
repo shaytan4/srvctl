@@ -35,5 +35,6 @@ func main() {
 
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(port, nil)
+	// _ = http.ListenAndServe(port, nil)   <--- Just for code quality demo, golangci-lint
 
 }
