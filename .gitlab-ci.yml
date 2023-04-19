@@ -1,0 +1,132 @@
+.go-cache:
+    variables:
+        GOPATH: $CI_PROJECT_DIR/.go
+    cache:
+      paths:
+        - .go/pkg/mod/
+
+variables:
+   OUTPUT_BIN_NAME: $CI_PROJECT_NAME_$CI_COMMIT_SHORT_SHA
+   DOCKER_REGISTRY: 621798104266.dkr.ecr.us-east-1.amazonaws.com
+   AWS_DEFAULT_REGION: us-east-1
+   APP_NAME: first
+   DOCKER_HOST: tcp://docker:2375
+   DOCKER_TLS_CERTDIR: ""
+   TASK_DEFINITION_NAME: "ECS task1"
+   CLUSTER_NAME: "test1"
+
+stages:
+  - lint
+  - test
+  - build
+  - release
+
+code_quality_tests:
+    image: golangci/golangci-lint:latest
+    stage: lint
+    extends: .go-cache
+    #allow_failure: true
+    script:
+      - mkdir -p "lint-reports/"       
+      - golangci-lint run ./... --issues-exit-code 0 --out-format junit-xml | tee "lint-reports/${CI_COMMIT_SHA}_lint_report.xml"       
+    artifacts:
+      expire_in: "15 days"
+      when: always   
+      paths:
+        - "lint-reports/${CI_COMMIT_SHA}_lint_report.xml"
+      reports:
+        junit: "lint-reports/${CI_COMMIT_SHA}_lint_report.xml"
+    tags:
+    - "gr2"
+    only:
+    - /^feature/*/
+
+unit_tests:
+    stage: test
+    image: golang:latest
+    extends: .go-cache
+    script:
+      - mkdir -p "unitests-reports/"   
+      - go install gotest.tools/gotestsum@latest
+      - $GOPATH/bin/gotestsum --junitfile unitests-reports/${CI_COMMIT_SHA}_unit_tests_report.xml --format standard-verbose
+    artifacts:
+      expire_in: "15 days"
+      when: always   
+      paths:
+        - unitests-reports/${CI_COMMIT_SHA}_unit_tests_report.xml
+      reports:
+        junit: unitests-reports/${CI_COMMIT_SHA}_unit_tests_report.xml
+    tags:
+    - "gr2"
+    only:
+    - /^feature/*/
+    needs: [code_quality_tests]
+
+build_bin_app:
+    stage: build
+    image: golang:latest
+    extends: .go-cache
+    script:
+      - mkdir -p artifacts/
+      - GOOS=linux GOARCH=amd64 go build -o artifacts/$OUTPUT_BIN_NAME ./... 
+    artifacts:
+      expire_in: "15 days"
+      when: on_success
+      paths:
+        - artifacts/$OUTPUT_BIN_NAME
+    tags:
+    - "gr2"
+    only:
+    - /^feature/*/
+    needs: [code_quality_tests,unit_tests]
+
+publish_to_aws_ecr:
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  tags:
+    - gr2
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - amazon-linux-extras install docker
+    - aws --version
+    - docker --version    
+    # - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    # - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY   
+    # - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    # - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    # - aws configure set region $AWS_DEFAULT_REGION     
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY  
+  script:
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME:latest .  
+    #- echo "Tagging image"
+    #- docker tag $DOCKER_REGISTRY:latest $DOCKER_REGISTRY/$APP_NAME  
+    - docker push $DOCKER_REGISTRY/$APP_NAME:latest    
+  rules:
+    - if: $CI_COMMIT_BRANCH 
+      exists:
+        - Dockerfile
+        
+
+# deploy_img_to_ecs:
+#   image: 
+#     name: amazon/aws-cli
+#     entrypoint: [""]
+#   tags:
+#     - gr2
+#   stage: release
+#   services: 
+#     - docker:dind
+#   before_script:
+#     - aws ecr get-login --no-include-email --region "${AWS_DEFAULT_REGION}"
+#   script:
+#     - echo $DOCKER_REGISTRY:latest
+#     - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_DEFINITION_NAME" --region "${AWS_DEFAULT_REGION}")
+#     - aws ecs register-task-definition --region "${AWS_DEFAULT_REGION}" --family "${TASK_DEFINITION_NAME}" --container-definitions "${NEW_CONTAINER_DEFINTIION}"
+#     - echo "Updating the service..."
+#     - aws ecs update-service --region "${AWS_DEFAULT_REGION}" --cluster "${CLUSTER_NAME}" --service "${SERVICE_NAME}"  --task-definition "${TASK_DEFINITION_NAME}"
+#   only:
+#     - master
+#   needs: [publish_to_aws_ecr]

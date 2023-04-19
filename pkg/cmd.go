@@ -1,5 +1,3 @@
-// https://stackoverflow.com/questions/37492544/golang-http-redirect-strange-behavior
-
 package cmd
 
 import (
